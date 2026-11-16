@@ -11,29 +11,29 @@ while True:
         print("До встречи!")
         break
     elif command == "1":
-          for task in tasks:
-                print(task)
-          print(f"Всего задач: {len(tasks)}")
+        for task in tasks:
+            print(task)
+        print(f"Всего задач: {len(tasks)}")
     elif command == "2":
-          new_task = input("Новая задача? ")
-          new_task = new_task.strip()
+        new_task = input("Новая задача? ")
+        new_task = new_task.strip()
 
-          if not new_task:
-              print("Задача не введена")
-          else:
-              tasks.append(new_task)
-              print("Задача добавлена")
+        if not new_task:
+            print("Задача не введена")
+        else:
+            tasks.append(new_task)
+            print("Задача добавлена")
     elif command == "3":
-         done_task = input("Какую задачу выполнил? ")
-         done_task = done_task.strip()
+        done_task = input("Какую задачу выполнил? ")
+        done_task = done_task.strip()
 
-         if not done_task:
-              print("Задача не введена")
-         elif done_task in tasks:
-              tasks.remove(done_task)
-              print("Задача выполнена")
-         else:
-              print("Такой задачи нет")
+        if not done_task:
+            print("Задача не введена")
+        elif done_task in tasks:
+            tasks.remove(done_task)
+            print("Задача выполнена")
+        else:
+            print("Такой задачи нет")
 
     else:
-         print("Неизвестная команда")
+        print("Неизвестная команда")
