@@ -5,6 +5,12 @@ def show_menu():
     print("0 - Выход")
 
 
+def show_tasks(task_list):
+    for task in task_list:
+        print(task)
+    print(f"Всего задач: {len(task_list)}")
+
+
 tasks = ["Повторить Python", "Решить задачу", "Погулять"]
 while True:
     show_menu()
@@ -15,9 +21,7 @@ while True:
         print("До встречи!")
         break
     elif command == "1":
-        for task in tasks:
-            print(task)
-        print(f"Всего задач: {len(tasks)}")
+        show_tasks(tasks)
     elif command == "2":
         new_task = input("Новая задача? ")
         new_task = new_task.strip()
