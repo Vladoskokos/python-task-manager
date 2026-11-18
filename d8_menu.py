@@ -1,9 +1,13 @@
-tasks = ["Повторить Python", "Решить задачу", "Погулять"]
-while True:
+def show_menu():
     print("1 - Показать задачи")
     print("2 - Добавить задачу")
     print("3 - Удалить выполненную задачу")
     print("0 - Выход")
+
+
+tasks = ["Повторить Python", "Решить задачу", "Погулять"]
+while True:
+    show_menu()
 
     command = input("Выбери действие: ").strip()
 
