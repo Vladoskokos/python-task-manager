@@ -1,3 +1,22 @@
+import json
+
+
+def save_tasks(task_list):
+    json_text = json.dumps(task_list, ensure_ascii=False)
+    with open("tasks.json", "w", encoding="utf-8") as tasks_file:
+        tasks_file.write(json_text)
+
+
+def load_tasks():
+    try:
+        with open("tasks.json", "r", encoding="utf-8") as tasks_file:
+            json_text = tasks_file.read()
+        task_list = json.loads(json_text)
+        return task_list
+    except FileNotFoundError:
+        return []
+
+
 def create_task(title):
     task = {"title": title, "done": False}
     return task
@@ -27,15 +46,15 @@ def complete_by_number(task_list, number_text):
             selected_task = task_list[task_index]
             complete_task(selected_task)
             print(f"Задача отмечена выполненной: {selected_task["title"]}")
+            return True
         else:
             print("Такого номера задачи нет")
     else:
         print("Введите номер цифрами")
+    return False
 
 
-tasks = []
-initial_task = create_task("Разобрать меню")
-tasks.append(initial_task)
+tasks = load_tasks()
 
 
 while True:
@@ -58,9 +77,12 @@ while True:
         else:
             user_task = create_task(user_title)
             tasks.append(user_task)
+            save_tasks(tasks)
     elif command == "3":
         number_text = input("Номер задачи: ")
         number_text = number_text.strip()
-        complete_by_number(tasks, number_text)
+        was_completed = complete_by_number(tasks, number_text)
+        if was_completed:
+            save_tasks(tasks)
     else:
         print("Неизвестная команда")
