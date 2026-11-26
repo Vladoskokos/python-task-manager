@@ -79,36 +79,40 @@ def complete_by_number(task_list, number_text):
     return False
 
 
-tasks = load_tasks()
-if tasks is None:
-    print("Не удалось загрузить задачи. Проверь файл tasks.json")
-else:
-    while True:
-        print("1 - Показать задачи")
-        print("2 - Новая задача")
-        print("3 - Отметить выполненной")
-        print("0 - Выход")
-        command = input("Выбери действие: ")
-        command = command.strip()
-        if command == "0":
-            print("До встречи!")
-            break
-        elif command == "1":
-            show_task_status(tasks)
-        elif command == "2":
-            user_title = input("Новая задача: ")
-            user_title = user_title.strip()
-            if not user_title:
-                print("Название не введено")
+def main():
+    tasks = load_tasks()
+    if tasks is None:
+        print("Не удалось загрузить задачи. Проверь файл tasks.json")
+    else:
+        while True:
+            print("1 - Показать задачи")
+            print("2 - Новая задача")
+            print("3 - Отметить выполненной")
+            print("0 - Выход")
+            command = input("Выбери действие: ")
+            command = command.strip()
+            if command == "0":
+                print("До встречи!")
+                break
+            elif command == "1":
+                show_task_status(tasks)
+            elif command == "2":
+                user_title = input("Новая задача: ")
+                user_title = user_title.strip()
+                if not user_title:
+                    print("Название не введено")
+                else:
+                    user_task = create_task(user_title)
+                    tasks.append(user_task)
+                    save_tasks(tasks)
+            elif command == "3":
+                number_text = input("Номер задачи: ")
+                number_text = number_text.strip()
+                was_completed = complete_by_number(tasks, number_text)
+                if was_completed:
+                    save_tasks(tasks)
             else:
-                user_task = create_task(user_title)
-                tasks.append(user_task)
-                save_tasks(tasks)
-        elif command == "3":
-            number_text = input("Номер задачи: ")
-            number_text = number_text.strip()
-            was_completed = complete_by_number(tasks, number_text)
-            if was_completed:
-                save_tasks(tasks)
-        else:
-            print("Неизвестная команда")
+                print("Неизвестная команда")
+
+
+main()
