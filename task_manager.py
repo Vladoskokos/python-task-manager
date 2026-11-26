@@ -11,8 +11,33 @@ def load_tasks():
     try:
         with open("tasks.json", "r", encoding="utf-8") as tasks_file:
             json_text = tasks_file.read()
-        task_list = json.loads(json_text)
-        return task_list
+        loaded_data = json.loads(json_text)
+        if not isinstance(loaded_data, list):
+            print("В файле должен быть список задач")
+            return None
+        for task in loaded_data:
+            if not isinstance(task, dict):
+                print("Каждая задача должна быть словарем")
+                return None
+            if "title" not in task:
+                print("В задачи нет ключа title")
+                return None
+            if "done" not in task:
+                print("В задачи нет ключа done")
+                return None
+            if not isinstance(task["title"], str):
+                print("Название задачи должно быть строкой")
+                return None
+            if not task["title"].strip():
+                print("Название задачи не должно быть пустым")
+                return None
+            if not isinstance(task["done"], bool):
+                print("Статус задачи должен быть логическим значением")
+                return None
+        return loaded_data
+    except json.JSONDecodeError:
+        print("Некорректный JSON")
+        return None
     except FileNotFoundError:
         return []
 
@@ -55,34 +80,35 @@ def complete_by_number(task_list, number_text):
 
 
 tasks = load_tasks()
-
-
-while True:
-    print("1 - Показать задачи")
-    print("2 - Новая задача")
-    print("3 - Отметить выполненной")
-    print("0 - Выход")
-    command = input("Выбери действие: ")
-    command = command.strip()
-    if command == "0":
-        print("До встречи!")
-        break
-    elif command == "1":
-        show_task_status(tasks)
-    elif command == "2":
-        user_title = input("Новая задача: ")
-        user_title = user_title.strip()
-        if not user_title:
-            print("Название не введено")
+if tasks is None:
+    print("Не удалось загрузить задачи. Проверь файл tasks.json")
+else:
+    while True:
+        print("1 - Показать задачи")
+        print("2 - Новая задача")
+        print("3 - Отметить выполненной")
+        print("0 - Выход")
+        command = input("Выбери действие: ")
+        command = command.strip()
+        if command == "0":
+            print("До встречи!")
+            break
+        elif command == "1":
+            show_task_status(tasks)
+        elif command == "2":
+            user_title = input("Новая задача: ")
+            user_title = user_title.strip()
+            if not user_title:
+                print("Название не введено")
+            else:
+                user_task = create_task(user_title)
+                tasks.append(user_task)
+                save_tasks(tasks)
+        elif command == "3":
+            number_text = input("Номер задачи: ")
+            number_text = number_text.strip()
+            was_completed = complete_by_number(tasks, number_text)
+            if was_completed:
+                save_tasks(tasks)
         else:
-            user_task = create_task(user_title)
-            tasks.append(user_task)
-            save_tasks(tasks)
-    elif command == "3":
-        number_text = input("Номер задачи: ")
-        number_text = number_text.strip()
-        was_completed = complete_by_number(tasks, number_text)
-        if was_completed:
-            save_tasks(tasks)
-    else:
-        print("Неизвестная команда")
+            print("Неизвестная команда")
