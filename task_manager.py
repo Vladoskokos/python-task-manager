@@ -115,4 +115,5 @@ def main():
                 print("Неизвестная команда")
 
 
-main()
+if __name__ == "__main__":
+    main()
